@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Oh My Event!</string>
+    <string name="title_events_list">Events</string>
+    <string name="save">Save</string>
+</resources>
