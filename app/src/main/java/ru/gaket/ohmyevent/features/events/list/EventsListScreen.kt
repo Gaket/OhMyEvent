@@ -4,13 +4,12 @@ import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
-import androidx.compose.material.Card
-import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.Surface
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.androidacademy.R
 import com.example.androidacademy.sections.list.ScreenState
 import com.example.androidacademy.ui.typography
 import ru.gaket.ohmyevent.features.events.EventUiModel
@@ -18,17 +17,27 @@ import ru.gaket.ohmyevent.features.events.EventUiModel
 
 @Composable
 fun EventsListScreen(state: ScreenState<List<EventUiModel>>) {
-    when (state) {
-        is ScreenState.Loading<*> -> LoadingScreen()
-        is ScreenState.Success<List<EventUiModel>> -> {
-            EventsList(
-                plants = state.data,
-                onEventClicked = {
-                    // TODO: navigate
-                })
+
+    Scaffold(
+        topBar = {
+            TopAppBar(title = {
+                Text("Events")
+            })
+        },
+        bodyContent = {
+            when (state) {
+                is ScreenState.Loading<*> -> LoadingScreen()
+                is ScreenState.Success<List<EventUiModel>> -> {
+                    EventsList(
+                        plants = state.data,
+                        onEventClicked = {
+                            // TODO: navigate
+                        })
+                }
+                is ScreenState.Error -> ErrorScreen(state.error)
+            }
         }
-        is ScreenState.Error -> ErrorScreen(state.error)
-    }
+    )
 }
 
 @Composable

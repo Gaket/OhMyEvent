@@ -4,7 +4,6 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.animate
 import androidx.compose.foundation.*
 import androidx.compose.runtime.Composable
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,16 +37,7 @@ fun EventDetailsScreen(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = {
-                    Text(event.title)
-                },
-                navigationIcon = {
-                    IconButton(onClick = { }) {
-                        Icon(Icons.Filled.ArrowBack)
-                    }
-                }
-            )
+            DetailsTopAppBar(event)
         },
         bodyContent = {
             EventDetail(event)
@@ -56,22 +46,7 @@ fun EventDetailsScreen(
 }
 
 @Composable
-fun EventCard(
-    @PreviewParameter(FakeEventProvider::class) event: EventUiModel
-) {
-    Surface() {
-        Column() {
-            Text("Hello world")
-            Text(event.description)
-            ListItem() {
-
-            }
-        }
-    }
-}
-
-@Composable
-private fun CreateTrackerAppBar(
+private fun DetailsTopAppBar(
     event: EventUiModel
 ) {
     TopAppBar(

@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Text
 import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +16,7 @@ import com.example.androidacademy.ui.EventTheme
 import ru.gaket.ohmyevent.data.EventsProvider
 import ru.gaket.ohmyevent.data.EventsRepository
 import ru.gaket.ohmyevent.features.events.EventUiModel
+import ru.gaket.ohmyevent.features.events.details.EventDetailsScreen
 import ru.gaket.ohmyevent.features.events.list.EventListViewModel
 import ru.gaket.ohmyevent.features.events.list.EventsListScreen
 
@@ -34,21 +36,18 @@ class MainActivity : AppCompatActivity() {
         locationsViewModel.eventsListState.observe(this) {
             setContent(it)
         }
+
     }
 
     fun setContent(state: ScreenState<List<EventUiModel>>) {
+        val showDetails = false
         setContent {
             EventTheme {
-                Scaffold(
-                    topBar = {
-                        TopAppBar(title = {
-                            Text(getString(R.string.title_events_list))
-                        })
-                    },
-                    bodyContent = {
-                        EventsListScreen(state)
-                    }
-                )
+                if (showDetails) {
+                    EventDetailsScreen(event = EventUiModel.from(EventsProvider(this).events.first()))
+                } else {
+                    EventsListScreen(state)
+                }
             }
         }
     }

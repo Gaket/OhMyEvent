@@ -1,5 +1,7 @@
 package ru.gaket.ohmyevent.features.events.list
 
+import androidx.compose.material.TextField
+import androidx.compose.runtime.state
 import androidx.lifecycle.*
 import com.example.androidacademy.sections.list.ScreenState
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -26,18 +28,10 @@ class EventListViewModel(private val repository: EventsRepository) : ViewModel()
             .toList()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe { _eventsListState.value = ScreenState.Loading() }
-            .doOnError { _eventsListState.value = ScreenState.Error("Can't download events") }
-            .subscribe(Consumer {
+            .subscribe({
                 _eventsListState.value = ScreenState.Success(it)
+            }, {
+                _eventsListState.value = ScreenState.Error(it.message ?: "Something went wrong")
             })
-    }
-}
-
-class UserViewModelFactory : ViewModelProvider.Factory {
-
-    lateinit var eventsRepository: EventsRepository
-
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return EventListViewModel(eventsRepository) as T
     }
 }
