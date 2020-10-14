@@ -1,15 +1,20 @@
 package ru.gaket.ohmyevent.features.events.list
 
+import android.R.color
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.state
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.example.androidacademy.R
 import com.example.androidacademy.sections.list.ScreenState
 import com.example.androidacademy.ui.typography
 import ru.gaket.ohmyevent.features.events.EventUiModel
@@ -20,9 +25,19 @@ fun EventsListScreen(state: ScreenState<List<EventUiModel>>) {
 
     Scaffold(
         topBar = {
-            TopAppBar(title = {
-                Text("Events")
-            })
+            TopAppBar(
+                title = {
+                    Text("Events")
+                },
+                actions = {
+                    if (state is ScreenState.Loading)
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colors.secondary,
+                            modifier = Modifier
+                                .padding(8.dp)
+                        )
+                }
+            )
         },
         bodyContent = {
             when (state) {
@@ -41,11 +56,22 @@ fun EventsListScreen(state: ScreenState<List<EventUiModel>>) {
 }
 
 @Composable
+fun PhoneTextField() {
+    TextField(
+        value = "Always hello",
+        onValueChange = {
+            // do nothing
+        },
+        label = { Text("Label") }
+    )
+}
+
+@Composable
 fun ErrorScreen(errorMsg: String) {
     Column(
         modifier = Modifier.fillMaxWidth().fillMaxHeight(),
         verticalArrangement = Arrangement.Center,
-        horizontalGravity = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
             text = "$errorMsg :("
