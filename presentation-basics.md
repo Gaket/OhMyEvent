@@ -1,9 +1,6 @@
 footer: Android Academy
 slidenumbers: true
 
-// TODO: update state to AA
-// TODO: more visual things in the second part
-
 # Making friends with JetPack Compose and MVI
 
 ### Or convenience of unidirectional flow
@@ -15,22 +12,28 @@ slidenumbers: true
 
 ---
 
-[PHOTO of telegram bot here]
-[PHOTO of the app here]
+![fit 94%](images/eventbot.png)
+![fit](images/events_list.jpg)
 
 ---
+# Custom views
 
 ```kotlin
-if (booking.isCancelled) {
-  shopAddress.setTextColorResource(...)
-  shopAddress.setTypeface(...))
-  shopAddress.text = getString(...)
+if (event.isCancelled) {
+  event.setTextColorResource(...)
+  event.setTypeface(...))
+  event.text = getString(...)
 } else {
-  shopAddress.setTextColorResource(...)
-  shopAddress.setTypeface(...))
-  shopAddress.text = getString(...)
+  event.setTextColorResource(...)
+  event.setTypeface(...))
+  event.text = getString(...)
 }
 ```
+
+![right fit](images/custom_rows.jpg)
+
+^ And that's not the worst case - an example of a custom view 
+
 ---
 
 # Jetpack Compose
@@ -51,12 +54,13 @@ if (booking.isCancelled) {
 - Compatible with Views
 
 ---
+[.build-lists: true]
 
 # Compose in a nutshell
 
 1. Throw away layouts 
 1. Throw away resource files
-1. Do everything in code.
+1. Do everything in code
 
 ---
 
@@ -75,6 +79,16 @@ setContent { Text("Hello World") }
 ```
 
 ![fit right](images/helloworld.png)
+
+---
+# Functions?
+
+```kotlin
+// New way
+setContent { Text("Hello World") }
+```
+
+^Do you remember what do the curly brackets mean? That's a function
 
 ---
 
@@ -144,10 +158,7 @@ body1 = TextStyle(
 ```
 
 ---
-[.code-highlight: all]
-[.code-highlight: 4]
-[.code-highlight: 6]
-[.code-highlight: 8]
+
 
 # Modifiers
 
@@ -165,13 +176,17 @@ Image(
     contentScale = ContentScale.Crop
 )
 ```
-![right fit ](images/avatar.png)
+![right fit 200%](images/avatar.png)
 
 ^ Initially they were the same compose functions, but it created too much nesting
 
 ---
 
 [.code-highlight: all]
+[.code-highlight: all]
+[.code-highlight: 4]
+[.code-highlight: 6]
+[.code-highlight: 8]
 
 # Modifiers
 
@@ -195,6 +210,14 @@ Image(
 ---
 
 # Back to events
+
+![fit right](images/events_list.jpg)
+
+---
+
+![fit ](images/loading.png)
+![fit ](images/events_list.jpg)
+![fit ](images/error.png)
 
 ---
 [.code-highlight: all]
@@ -247,6 +270,7 @@ private fun EventDisplay(event: EventUiModel) {
 
 ---
 [.code-highlight: 2]
+# Important note
 
 ```kotlin
 @Composable
@@ -263,12 +287,12 @@ fun EventDetailsScreen(state: ScreenState) {
 
 ---
 
-Where is my Event?
+#[fit]Where is my Event?
 
 ---
 
-~~Where is my Event?~~
-Where is my State?
+#[fit]~~Where is my Event?~~
+#[fit]Where is my State?
 
 ---
 
@@ -285,10 +309,13 @@ intervace View {
 ```
 
 ---
+[.code-highlight: all]
+[.code-highlight: 3]
 
 # MVVM
 
 Looks better:
+
 ```kotlin
 class View {
   init {
@@ -300,7 +327,10 @@ class View {
 ```
 
 ^ That's actually closer, as we can subscribe Compose to these streams
+
 ---
+[.code-highlight: all]
+[.code-highlight: 3]
 
 # MVI
 
@@ -311,6 +341,8 @@ class View {
   }
 }
 ```
+
+^Does it resemble something?
 
 ---
 [.code-highlight: 1, 5]
@@ -329,17 +361,16 @@ class View {
 
 ---
 
+#[fit] Model View Intent
+
+---
 
 > Model is responsible for representing state, structure, and behaviour of the user’s mental model.
 
 ---
 
 > A View presents information that it retrieves from one or more model objects.
-
----
-
-> Let the View register with the Model as being a dependent of the Model, and let the Model send appropriate messages to its dependents whenever it changes. 
--- Trygve Reenskaug in 1979 as a part of MVC architecture.
+>-- Trygve Reenskaug in 1979 as a part of MVC architecture.
 
 ^ Loosely speaking, the original explanation specifies Model as an entity which tells View what to display on the screen. If Model changes, View gets notified about the change, and it will render the change on the screen.
 
@@ -350,20 +381,23 @@ class View {
 
 ---
 
+# Redux
+
 1. Model (State)
 1. View (View)
 1. Intent (Action)
+
+![fit](images/MVI-web.png)
 
 ^ That's came from Redux
 
 ---
 
- [Three details screens here: loading, error, details]
+![fit ](images/loading.png)
+![fit ](images/events_list.jpg)
+![fit ](images/error.png)
 
 ---
-// TODO: scheme of how is it changes
-// changed the field, it went to model, etc
-// on EventsDetail screen
 
 ```kotlin
 sealed class ScreenState<out T> {
@@ -375,6 +409,8 @@ sealed class ScreenState<out T> {
 
 ---
 
+# Content and update
+
 ```kotlin
 data class DetailsState (
   val details: Event,
@@ -383,7 +419,7 @@ data class DetailsState (
 )
 ```
 
- [Image : there are details, but also Swipe Layout loader]
+![fit right](images/list_and_update.jpg)
 
 ---
 
@@ -401,11 +437,11 @@ sealed class DetailsViewIntent {
 # A problem of state
 
 Views with intrinsic state:
-`SwipeRefreshLayout`
-`Spinner`
-`EditText`
+- `SwipeRefreshLayout`
+- `Spinner`
+- `EditText`
 
-[SwipeRefreshLayout and EditText pictures on the right]
+![right 80%](images/swipe_refresh.png)
 
 ---
 
@@ -420,14 +456,13 @@ fun update(vm : viewStateModel) {
 }
 ```
 
+![right 50%](images/phone_input.jpg)
+
 ^ selection will go nuts + text will become unformatted + infinite loop
 
 ---
 
 # EditText in Compose
-
-// TODO: check if we need to use mutableState inside
-// and not immutable state
 
 ```kotlin
 @Composable
@@ -456,10 +491,10 @@ fun PhoneTextField(val text : String,
 ```
 
 ---
+[.code-highlight: all]
+[.code-highlight: 1,4]
 
 # Recomposing
-
-// TODO: highlith adapter line
 
 ```kotlin
 @Composable
@@ -495,6 +530,8 @@ No restrictions:
 1. Multiple Fragments
 1. Compose - only
 
+^ Do you remember how apps architecture changed when Android Views system came?
+
 ---
 
 # Navigation
@@ -506,7 +543,7 @@ No restrictions:
 
 ---
 
-# To conclude
+#[fit] To conclude
 
 ---
 [.build-lists: true]
@@ -530,11 +567,13 @@ No restrictions:
 1. Learning curve
 2. Readability
 3. Need to mature
+4. Navigation without classes 😱
 
 ^ I know many devs who are ok with the way things already work
 
 --- 
-# Plans 
+
+# Jetpack Compose Plans 
 
 1. Biweekly releases
 2. Alpha is something that we can play with in our apps
@@ -543,13 +582,16 @@ No restrictions:
 
 ---
 
-# Thank you for attention
+#[fit] Thank you for your time
 
 ---
 
 # Links
 
-repo:
-blabla:
-academy:
+Events App repo: 
+[https://github.com/Gaket/OhMyEvent](https://github.com/Gaket/OhMyEvent)
+Main examples: 
+[https://github.com/android/compose-samples](https://github.com/android/compose-samples)
+Android Academy: 
+[https://www.youtube.com/channel/UCmkVThwbjthEg2RR4iuDQWA](https://www.youtube.com/channel/UCmkVThwbjthEg2RR4iuDQWA)
 
