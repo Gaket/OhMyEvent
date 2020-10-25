@@ -123,7 +123,8 @@ class FakeEventProvider : PreviewParameterProvider<EventUiModel> {
             "Best event in the world",
             listOf("android", "ios"),
             R.drawable.ic_launcher_foreground,
-            "Short event"
+            "Short event",
+            false
         )
     )
     override val count: Int = values.count()

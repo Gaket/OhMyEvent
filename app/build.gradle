@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.0'
 }
 
@@ -39,6 +40,11 @@ android {
         kotlinCompilerExtensionVersion "${compose_version}"
         kotlinCompilerVersion "1.4.0"
     }
+
+    // Add for using latest experimental build of Android Extensions
+    androidExtensions {
+        experimental = true
+    }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
@@ -71,6 +77,9 @@ dependencies {
     implementation 'com.google.android.material:material:1.2.0'
     implementation "androidx.ui:ui-tooling:$compose_version"
 
+    implementation group: 'androidx.navigation', name: 'navigation-runtime-ktx', version: '2.3.0'
+
+    implementation "com.github.badoo:RIBs:0.22.0"
 
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.2.0-alpha01'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'

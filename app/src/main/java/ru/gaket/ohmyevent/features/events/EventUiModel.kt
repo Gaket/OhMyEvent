@@ -7,7 +7,8 @@ data class EventUiModel(
     val description: String,
     val tags: List<String>,
     val image: Int?,
-    val shortDescription: String?
+    val shortDescription: String?,
+    val isLoading: Boolean
 ) {
 
     companion object {
@@ -17,7 +18,8 @@ data class EventUiModel(
                 event.description,
                 event.tags,
                 event.image,
-                event.shortDescription
+                event.shortDescription,
+                false
             )
         }
     }
